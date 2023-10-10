@@ -1,53 +1,21 @@
-﻿<Properties StartupConfiguration="{33AEAC63-1A28-4B94-BF3B-380049ED90C6}|https">
+﻿<Properties StartupConfiguration="{06EBEF65-CA94-4A28-AB61-ED7A994460BF}|Default">
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.ItemProperties.Resunet PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Resunet/DAL/AuthDAL.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Resutest/UnitTest1.cs">
     <Files>
-      <File FileName="Resunet/Controllers/HomeController.cs" Line="1" Column="1" />
-      <File FileName="Resunet/DAL/Auth/AuthDAL.cs" Line="8" Column="1" />
-      <File FileName="Resunet/DAL/Auth/IAuthDAL.cs" Line="5" Column="1" />
-      <File FileName="Resunet/DAL/Models/UserModel.cs" Line="15" Column="43" />
-      <File FileName="Resunet/DAL/DbHelper.cs" Line="6" Column="35" />
-      <File FileName="Resunet/BL/Auth/IAuthBL.cs" Line="8" Column="19" />
-      <File FileName="Resunet/BL/Auth/AuthBL.cs" Line="17" Column="41" />
-      <File FileName="Resunet/Controllers/RegisterController.cs" Line="17" Column="12" />
-      <File FileName="Resunet/ViewModels/RegisterViewModel.cs" Line="8" Column="16" />
-      <File FileName="Resunet/ViewMapper/AuthMapper.cs" Line="15" Column="4" />
-      <File FileName="Resunet/Views/Register/Index.cshtml" Line="4" Column="5" />
-      <File FileName="Resunet/Views/Shared/_Layout.cshtml" Line="1" Column="1" />
-      <File FileName="Resunet/Program.cs" Line="6" Column="71" />
+      <File FileName="Resutest/UnitTest1.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="Resunet" expanded="True">
-            <Node name="Resunet" expanded="True">
-              <Node name="BL" expanded="True">
-                <Node name="Auth" expanded="True" />
-              </Node>
-              <Node name="Controllers" expanded="True" />
-              <Node name="DAL" expanded="True">
-                <Node name="Models" expanded="True" />
-                <Node name="AuthDAL.cs" selected="True" />
-              </Node>
-              <Node name="ViewMapper" expanded="True" />
-              <Node name="ViewModels" expanded="True" />
-              <Node name="Views" expanded="True">
-                <Node name="Register" expanded="True" />
-                <Node name="Shared" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
+          <Node name="Resunet" expanded="True" selected="True" />
         </State>
-      </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.Resutest FirstBuild="True" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MultiItemStartupConfigurations />
 </Properties>

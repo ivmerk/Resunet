@@ -32,12 +32,13 @@ namespace Resunet.BL.Auth
     public async Task<int> Authentificate(string email, string password, bool rememberMe)
     {
       var user = await authDAL.GetUser(email);
-      if (user.Password == encrypt.HashPassword(password, user.Salt))
+
+      if (user.UserId == null && user.Password == encrypt.HashPassword(password, user.Salt))
       {
         Login(user.UserId ?? 0);
         return user.UserId ?? 0;
       }
-      return 0;
+      throw new AuthorizationException();
     }
     public async Task<ValidationResult?> ValidateEmail(string email)
     {
