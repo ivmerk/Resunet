@@ -1,4 +1,4 @@
-﻿<Properties StartupConfiguration="{06EBEF65-CA94-4A28-AB61-ED7A994460BF}|Default">
+﻿<Properties StartupConfiguration="{33AEAC63-1A28-4B94-BF3B-380049ED90C6}|https">
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -9,13 +9,17 @@
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="Resunet" expanded="True" selected="True" />
+          <Node name="Resunet" selected="True">
+            <Node name="Resunet" expanded="True" />
+            <Node name="Resutest" expanded="True" />
+          </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.Resutest FirstBuild="True" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.ItemProperties.Resunet PreferredExecutionTarget="/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app" />
+  <MonoDevelop.Ide.ItemProperties.Resutest FirstBuild="True" />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MultiItemStartupConfigurations />
 </Properties>
