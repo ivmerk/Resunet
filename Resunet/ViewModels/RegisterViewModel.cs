@@ -1,11 +1,16 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace Resunet.ViewModels
 {
-	public class RegisterViewModel
-	{
-
-		public string? Email { get; set; }
-		public string? Password { get; set; }
-	}
+  public class RegisterViewModel
+  {
+    [Required(ErrorMessage = "Email обязателен")]
+    [EmailAddress(ErrorMessage = "Некорректный формат")]
+    public string? Email { get; set; }
+    [Required(ErrorMessage = "Пароль обязателен")]
+    [RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*-]).{10,}$", ErrorMessage = "Пароль слишком простой")]
+    public string? Password { get; set; }
+  }
 }
 
