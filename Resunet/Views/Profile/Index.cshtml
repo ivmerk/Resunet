@@ -1,18 +1,17 @@
-@model LoginViewModel
+@model ProfileViewModel
 
 @{
-  ViewData["Title"] = "Авторизация";
+  ViewData["Title"] = "Профиль";
 }
 <div>
-  <form action="/login" method="post">
+  <form action="/profile" method="post" enctype="multipart/form-data">
     <p>
       <label>Email</label>
-      <input name="Email" value="@Model.Email" />
-    <div class="error">@Html.ValidationMessageFor(m => m.Email)</div>
+      <input name="ProfileName" value="@Model.ProfileName" />
+    <div class="error">@Html.ValidationMessageFor(m => m.ProfileName)</div>
     </p>
     <p>
-      <label>Пароль</label>
-      <input name="Password" type="password" value="@Model.Password" />
+      <input type="file" name="file" />
     </p>
     <button>Авторизоваться</button>
   </form>

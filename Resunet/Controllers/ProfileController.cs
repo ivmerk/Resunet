@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Cryptography;
+using Microsoft.AspNetCore.Mvc;
+using Resunet.ViewModels;
 
 namespace Resunet.Controllers
 {
@@ -8,13 +10,31 @@ namespace Resunet.Controllers
     [Route("/profile")]
     public IActionResult Index()
     {
-      return View();
+      return View(new ProfileViewModel());
     }
     [HttpPost]
     [Route("/profile")]
-    public IActionResult IndexSave()
+    public async Task<IActionResult> IndexSave()
     {
-      return View();
+      var imageData = Request.Form.Files[0];
+      if (imageData != null)
+      {
+        byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(imageData.FileName);
+        byte[] hashBytes = MD5.HashData(inputBytes);
+
+        string hash = Convert.ToHexString(hashBytes);
+
+        var dir = "./wwwroot/images/" + hash[..2] + "/" + hash[..4];
+
+        if (!Directory.Exists(dir))
+          Directory.CreateDirectory(dir);
+
+        string filename = dir + "/" + imageData.FileName;
+        using var stream = System.IO.File.Create(filename);
+        await imageData.CopyToAsync(stream);
+
+      }
+      return View("Index", new ProfileViewModel());
     }
   }
 }
