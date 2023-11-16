@@ -33,10 +33,10 @@ namespace Resunet.BL.Auth
     {
       var user = await authDAL.GetUser(email);
 
-      if (user.UserId == null && user.Password == encrypt.HashPassword(password, user.Salt))
+      if (user.UserId != null && user.Password == encrypt.HashPassword(password, user.Salt))
       {
-        Login(user.UserId ?? 0);
-        return user.UserId ?? 0;
+        Login(user.UserId.Value);
+        return user.UserId.Value;
       }
       throw new AuthorizationException();
     }

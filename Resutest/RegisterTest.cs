@@ -20,7 +20,7 @@ public class RegisterTest : Helpers.BaseTest
 
       // validate: should not be in the DB
       var emailValidationResult = await authBL.ValidateEmail(email);
-      Assert.IsNull(emailValidationResult);
+      Assert.That(emailValidationResult, Is.Null);
 
       // create user
       int userId = await authBL.CreateUser(
@@ -29,11 +29,24 @@ public class RegisterTest : Helpers.BaseTest
           Email = email,
           Password = "qwer12345"
         });
-      Assert.Greater(userId, 0);
+      Assert.That(userId, Is.GreaterThan(0));
+
+      var userDalResult = await authDal.GetUser(userId);
+      Assert.Multiple(() =>
+      {
+        Assert.That(userDalResult.Email, Is.EqualTo(email));
+        Assert.That(userDalResult.Salt, Is.Not.Null);
+      });
+      var userByEmailDalResult = await authDal.GetUser(email);
+      Assert.That(userByEmailDalResult.Email, Is.EqualTo(email));
+
 
       // validate: should be in the DB
       emailValidationResult = await authBL.ValidateEmail(email);
-      Assert.IsNotNull(emailValidationResult);
+      Assert.That(emailValidationResult, Is.Not.Null);
+
+      string encPassword = encrypt.HashPassword("qwer12345", userByEmailDalResult.Salt);
+      Assert.That(encPassword, Is.EqualTo(userByEmailDalResult.Password));
     }
   }
 }
