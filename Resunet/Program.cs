@@ -2,13 +2,14 @@
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<Resunet.BL.Auth.IAuthBL, Resunet.BL.Auth.AuthBL>();
+builder.Services.AddScoped<Resunet.BL.Auth.IAuthBL, Resunet.BL.Auth.AuthBL>();
 builder.Services.AddSingleton<Resunet.BL.Auth.IEncrypt, Resunet.BL.Auth.Encrypt>();
 builder.Services.AddScoped<Resunet.BL.Auth.ICurrentUser, Resunet.BL.Auth.CurrentUser>();
 builder.Services.AddSingleton<Resunet.DAL.IAuthDAL, Resunet.DAL.AuthDAL>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddMvc().AddSessionStateTempDataProvider();
-builder.Services.AddSession();
+builder.Services.AddSingleton<Resunet.DAL.IDbSessionDAL, Resunet.DAL.DbSessionDAL>();
+builder.Services.AddScoped<Resunet.BL.Auth.IDbSession, Resunet.BL.Auth.DbSession>();
+builder.Services.AddMvc();
 
 var app = builder.Build();
 
@@ -24,7 +25,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseSession();
 
 app.UseAuthorization();
 

@@ -9,25 +9,27 @@ namespace Resunet.BL.Auth
     private readonly IAuthDAL authDAL;
     private readonly IEncrypt encrypt;
     private readonly IHttpContextAccessor httpContextAccessor;
+    private readonly IDbSession dbSession;
 
-    public AuthBL(IAuthDAL authDAL, IEncrypt encrypt, IHttpContextAccessor httpContextAccessor)
+    public AuthBL(IAuthDAL authDAL, IEncrypt encrypt, IHttpContextAccessor httpContextAccessor, IDbSession dbSession)
     {
       this.authDAL = authDAL;
       this.encrypt = encrypt;
       this.httpContextAccessor = httpContextAccessor;
+      this.dbSession = dbSession;
     }
     public async Task<int> CreateUser(UserModel user)
     {
       user.Salt = Guid.NewGuid().ToString();
       user.Password = encrypt.HashPassword(user.Password, user.Salt);
       int id = await authDAL.CreateUser(user);
-      Login(id);
+      await Login(id);
       return id;
     }
 
-    public void Login(int id)
+    public async Task Login(int id)
     {
-      httpContextAccessor.HttpContext?.Session.SetInt32(AuthConstants.AUTH_SESSION_PARAM_NAME, id);
+      await dbSession.SetUserId(id);
     }
     public async Task<int> Authentificate(string email, string password, bool rememberMe)
     {
@@ -35,7 +37,7 @@ namespace Resunet.BL.Auth
 
       if (user.UserId != null && user.Password == encrypt.HashPassword(password, user.Salt))
       {
-        Login(user.UserId.Value);
+        await Login(user.UserId.Value);
         return user.UserId.Value;
       }
       throw new AuthorizationException();
