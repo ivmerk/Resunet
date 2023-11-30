@@ -3,12 +3,13 @@ using Resunet.BL.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Resunet.ViewModels;
 using Resunet.ViewMapper;
+using Resunet.BL;
 namespace Resunet.Controllers
 {
   public class RegisterController : Controller
   {
-    private readonly IAuthBL authBL;
-    public RegisterController(IAuthBL authBL)
+    private readonly IAuth authBL;
+    public RegisterController(IAuth authBL)
     {
       this.authBL = authBL;
     }
@@ -25,16 +26,15 @@ namespace Resunet.Controllers
     {
       if (ModelState.IsValid)
       {
-        var errorModel = await authBL.ValidateEmail(model.Email ?? "");
-        if (errorModel != null)
+        try
         {
-          ModelState.TryAddModelError("Email", errorModel.ErrorMessage!);
+          await authBL.CreateUser(AuthMapper.MapRegistrationViewModelToUserModel(model));
+          return Redirect("/");
         }
-      }
-      if (ModelState.IsValid)
-      {
-        await authBL.CreateUser(AuthMapper.MapRegistrationViewModelToUserModel(model));
-        return Redirect("/");
+        catch (DublicateEmailException)
+        {
+          ModelState.TryAddModelError("Email", "Email уже существует");
+        }
       }
       return View("Index", model);
     }

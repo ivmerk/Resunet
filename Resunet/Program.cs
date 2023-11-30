@@ -2,7 +2,7 @@
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<Resunet.BL.Auth.IAuthBL, Resunet.BL.Auth.AuthBL>();
+builder.Services.AddScoped<Resunet.BL.Auth.IAuth, Resunet.BL.Auth.Auth>();
 builder.Services.AddSingleton<Resunet.BL.Auth.IEncrypt, Resunet.BL.Auth.Encrypt>();
 builder.Services.AddScoped<Resunet.BL.Auth.ICurrentUser, Resunet.BL.Auth.CurrentUser>();
 builder.Services.AddSingleton<Resunet.DAL.IAuthDAL, Resunet.DAL.AuthDAL>();

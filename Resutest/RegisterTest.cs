@@ -2,7 +2,7 @@
 
 using System.Transactions;
 using Helpers;
-
+using Resunet.BL;
 
 public class RegisterTest : Helpers.BaseTest
 {
@@ -19,11 +19,10 @@ public class RegisterTest : Helpers.BaseTest
       string email = Guid.NewGuid().ToString() + "@test.com";
 
       // validate: should not be in the DB
-      var emailValidationResult = await authBL.ValidateEmail(email);
-      Assert.That(emailValidationResult, Is.Null);
+      auth.ValidateEmail(email).GetAwaiter().GetResult();
 
       // create user
-      int userId = await authBL.CreateUser(
+      int userId = await auth.CreateUser(
         new Resunet.DAL.Models.UserModel()
         {
           Email = email,
@@ -42,8 +41,7 @@ public class RegisterTest : Helpers.BaseTest
 
 
       // validate: should be in the DB
-      emailValidationResult = await authBL.ValidateEmail(email);
-      Assert.That(emailValidationResult, Is.Not.Null);
+      Assert.Throws<DublicateEmailException>(delegate { auth.ValidateEmail(email).GetAwaiter().GetResult(); });
 
       string encPassword = encrypt.HashPassword("qwer12345", userByEmailDalResult.Salt);
       Assert.That(encPassword, Is.EqualTo(userByEmailDalResult.Password));

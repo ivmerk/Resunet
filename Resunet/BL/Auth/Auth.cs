@@ -2,16 +2,17 @@
 using Resunet.DAL.Models;
 using Resunet.DAL;
 using System.ComponentModel.DataAnnotations;
+using Resunet.BL.General;
 namespace Resunet.BL.Auth
 {
-  public class AuthBL : IAuthBL
+  public class Auth : IAuth
   {
     private readonly IAuthDAL authDAL;
     private readonly IEncrypt encrypt;
     private readonly IHttpContextAccessor httpContextAccessor;
     private readonly IDbSession dbSession;
 
-    public AuthBL(IAuthDAL authDAL, IEncrypt encrypt, IHttpContextAccessor httpContextAccessor, IDbSession dbSession)
+    public Auth(IAuthDAL authDAL, IEncrypt encrypt, IHttpContextAccessor httpContextAccessor, IDbSession dbSession)
     {
       this.authDAL = authDAL;
       this.encrypt = encrypt;
@@ -42,12 +43,22 @@ namespace Resunet.BL.Auth
       }
       throw new AuthorizationException();
     }
-    public async Task<ValidationResult?> ValidateEmail(string email)
+    public async Task ValidateEmail(string email)
     {
       var user = await authDAL.GetUser(email);
       if (user.UserId != null)
-        return new ValidationResult("Email уже существует");
-      return null;
+        throw new DublicateEmailException();
+    }
+
+    public async Task Register(UserModel user)
+    {
+      using (var scope = Helpers.CreateTransactionScope())
+      {
+        await dbSession.Lock();
+        await ValidateEmail(user.Email);
+        await CreateUser(user);
+        scope.Complete();
+      }
     }
   }
 }

@@ -7,7 +7,7 @@ namespace Resunet.DAL
 {
   public class DbSessionDAL : IDbSessionDAL
   {
-    public async Task<int> CreateSession(SessionModel model)
+    public async Task<int> Create(SessionModel model)
     {
       using var connection = new NpgsqlConnection(DbHelper.ConnString);
       await connection.OpenAsync();
@@ -17,7 +17,7 @@ namespace Resunet.DAL
       return await connection.ExecuteAsync(sql, model);
     }
 
-    public async Task<SessionModel?> GetSession(Guid sessionId)
+    public async Task<SessionModel?> Get(Guid sessionId)
     {
       using var connection = new NpgsqlConnection(DbHelper.ConnString);
       await connection.OpenAsync();
@@ -27,7 +27,16 @@ namespace Resunet.DAL
       return sessions.FirstOrDefault();
     }
 
-    public async Task<int> UpdateSession(SessionModel model)
+    public async Task Lock(Guid sessionId)
+    {
+      using var connection = new NpgsqlConnection(DbHelper.ConnString);
+      await connection.OpenAsync();
+      string sql = @"select DbSessionID from DbSession where DbSessionID = @sessionId for update";
+
+      var sessions = await connection.QueryAsync<SessionModel>(sql, new { sessionId });
+    }
+
+    public async Task<int> Update(SessionModel model)
     {
       using var connection = new NpgsqlConnection(DbHelper.ConnString);
       await connection.OpenAsync();

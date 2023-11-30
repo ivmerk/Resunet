@@ -20,20 +20,20 @@ namespace Resutest
         string email = Guid.NewGuid().ToString() + "@test.com";
 
         // create user
-        int userId = await authBL.CreateUser(
+        int userId = await auth.CreateUser(
             new Resunet.DAL.Models.UserModel()
             {
               Email = email,
               Password = "qwer1234"
             });
 
-        Assert.Throws<AuthorizationException>(() => authBL.Authentificate("sefrew", "111", false).GetAwaiter().GetResult());
+        Assert.Throws<AuthorizationException>(() => auth.Authentificate("sefrew", "111", false).GetAwaiter().GetResult());
 
-        Assert.Throws<AuthorizationException>(delegate { authBL.Authentificate(email, "111", false).GetAwaiter().GetResult(); });
+        Assert.Throws<AuthorizationException>(delegate { auth.Authentificate(email, "111", false).GetAwaiter().GetResult(); });
 
-        Assert.Throws<AuthorizationException>(delegate { authBL.Authentificate("werewr", "qwer1234", false).GetAwaiter().GetResult(); });
+        Assert.Throws<AuthorizationException>(delegate { auth.Authentificate("werewr", "qwer1234", false).GetAwaiter().GetResult(); });
 
-        await authBL.Authentificate(email, "qwer1234", false);
+        await auth.Authentificate(email, "qwer1234", false);
       }
     }
   }

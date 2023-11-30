@@ -14,7 +14,7 @@ namespace Resunet.BL.Auth
       this.httpContextAccessor = httpContextAccessor;
     }
 
-    private void CreateSessionCookie(Guid sessionid)
+    private void CreateCookie(Guid sessionid)
     {
       CookieOptions options = new()
       {
@@ -26,7 +26,7 @@ namespace Resunet.BL.Auth
       httpContextAccessor?.HttpContext?.Response.Cookies.Append(AuthConstants.SessionCookieName, sessionid.ToString(), options);
     }
 
-    private async Task<SessionModel> CreateSession()
+    private async Task<SessionModel> Create()
     {
       var data = new SessionModel()
       {
@@ -34,12 +34,12 @@ namespace Resunet.BL.Auth
         Created = DateTime.Now,
         LastAccessed = DateTime.Now
       };
-      await sessionDAL.CreateSession(data);
+      await sessionDAL.Create(data);
       return data;
     }
 
     private SessionModel? sessionModel = null;
-    public async Task<SessionModel> GetSession()
+    public async Task<SessionModel> Get()
     {
       if (sessionModel != null)
         return sessionModel;
@@ -51,11 +51,11 @@ namespace Resunet.BL.Auth
       else
         sessionId = Guid.NewGuid();
 
-      var data = await sessionDAL.GetSession(sessionId);
+      var data = await sessionDAL.Get(sessionId);
       if (data == null)
       {
-        data = await CreateSession();
-        CreateSessionCookie(data.DbSessionId);
+        data = await Create();
+        CreateCookie(data.DbSessionId);
       }
       sessionModel = data;
       return data;
@@ -63,23 +63,29 @@ namespace Resunet.BL.Auth
 
     public async Task<int> SetUserId(int userId)
     {
-      var data = await GetSession();
+      var data = await Get();
       data.UserId = userId;
       data.DbSessionId = Guid.NewGuid();
-      CreateSessionCookie(data.DbSessionId);
-      return await sessionDAL.CreateSession(data);
+      CreateCookie(data.DbSessionId);
+      return await sessionDAL.Create(data);
     }
 
     public async Task<int?> GetUserId()
     {
-      var data = await GetSession();
+      var data = await Get();
       return data.UserId;
     }
 
     public async Task<bool> IsLoggedIn()
     {
-      var data = await GetSession();
+      var data = await Get();
       return data.UserId != null;
+    }
+
+    public async Task Lock()
+    {
+      var data = await Get();
+      await sessionDAL.Lock(data.DbSessionId);
     }
   }
 }
